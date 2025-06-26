@@ -47,4 +47,19 @@ CREATE TABLE IF NOT EXISTS budgets (
 		return err
 	}
 	return nil
+
+	incomeTable := `
+CREATE TABLE IF NOT EXISTS incomes (
+    	id SERIAL PRIMARY KEY,
+    	user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    	amount FLOAT NOT NULL,
+    source VARCHAR(50) NOT NULL,
+    description TEXT,
+    date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );`
+	_, err = db.Exec(incomeTable)
+	if err != nil {
+		return err
+	}
 }
