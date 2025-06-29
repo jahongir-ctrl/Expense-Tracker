@@ -46,7 +46,6 @@ CREATE TABLE IF NOT EXISTS budgets (
 	if err != nil {
 		return err
 	}
-	return nil
 
 	incomeTable := `
 CREATE TABLE IF NOT EXISTS incomes (
@@ -62,4 +61,34 @@ CREATE TABLE IF NOT EXISTS incomes (
 	if err != nil {
 		return err
 	}
+	//return nil
+	goalsTable := `
+CREATE TABLE IF NOT EXISTS goals (
+    	id SERIAL PRIMARY KEY,
+    	user_id INT REFERENCES users(id),
+    	title VARCHAR(255) NOT NULL,
+    target_amount FLOAT NOT NULL,
+    current_amount FLOAT NOT NULL DEFAULT 0,
+    description TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );`
+	_, err = db.Exec(goalsTable)
+	if err != nil {
+		return err
+	}
+	//return nil
+
+	categoryTable := `
+CREATE TABLE IF NOT EXISTS categories (
+    	id SERIAL PRIMARY KEY,
+    	user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    	name VARCHAR(50) NOT NULL,
+    type VARCHAR(10) NOT NULL CHECK (type IN ('expense', 'income')) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );`
+	_, err = db.Exec(categoryTable)
+	if err != nil {
+		return err
+	}
+	return nil
 }

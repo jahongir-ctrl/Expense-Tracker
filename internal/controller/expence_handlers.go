@@ -7,6 +7,17 @@ import (
 	"strconv"
 )
 
+// CreateExpenseHandler godoc
+// @Summary      Create expense
+// @Description  Create a new expense for the user
+// @Tags         expenses
+// @Accept       json
+// @Produce      json
+// @Param        expense  body  object{amount=float64,category=string,description=string}  true  "Expense info"
+// @Success      201  {object}  map[string]interface{}
+// @Failure      400  {object}  map[string]interface{}
+// @Failure      500  {object}  map[string]interface{}
+// @Router       /api/expenses [post]
 func CreateExpenseHandler(c *gin.Context) {
 	userID := c.GetInt("user_id")
 	var input struct {
@@ -28,6 +39,14 @@ func CreateExpenseHandler(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Expense created successfully"})
 }
 
+// GetExpencesHandler godoc
+// @Summary      Get all expenses
+// @Description  Get all expenses for the user
+// @Tags         expenses
+// @Produce      json
+// @Success      200  {object}  map[string]interface{}
+// @Failure      500  {object}  map[string]interface{}
+// @Router       /api/expenses [get]
 func GetExpencesHandler(c *gin.Context) {
 	userID := c.GetInt("user_id")
 
@@ -40,6 +59,18 @@ func GetExpencesHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"expenses": expenses})
 }
 
+// UpdateExpenseHandler godoc
+// @Summary      Update expense
+// @Description  Update an existing expense
+// @Tags         expenses
+// @Accept       json
+// @Produce      json
+// @Param        id      path    int     true  "Expense ID"
+// @Param        expense body    object{amount=float64,category=string,description=string}  true  "Expense info"
+// @Success      200  {object}  map[string]interface{}
+// @Failure      400  {object}  map[string]interface{}
+// @Failure      500  {object}  map[string]interface{}
+// @Router       /api/expenses/{id} [put]
 func UpdateExpenseHandler(c *gin.Context) {
 	userID := c.GetInt("user_id")
 	idStr := c.Param("id")
@@ -67,6 +98,16 @@ func UpdateExpenseHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Expense updated successfully"})
 }
 
+// DeleteExpenseHandler godoc
+// @Summary      Delete expense
+// @Description  Delete an expense by ID
+// @Tags         expenses
+// @Produce      json
+// @Param        id   path      int  true  "Expense ID"
+// @Success      200  {object}  map[string]interface{}
+// @Failure      400  {object}  map[string]interface{}
+// @Failure      500  {object}  map[string]interface{}
+// @Router       /api/expenses/{id} [delete]
 func DeleteExpenseHandler(c *gin.Context) {
 	userID := c.GetInt("user_id")
 
@@ -84,6 +125,20 @@ func DeleteExpenseHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Expense deleted successfully"})
 }
 
+// GetFilteredExpensesHandler godoc
+// @Summary      Get filtered expenses
+// @Description  Get expenses by filter
+// @Tags         expenses
+// @Produce      json
+// @Param        from     query   string  false  "From date"
+// @Param        to       query   string  false  "To date"
+// @Param        category query   string  false  "Category"
+// @Param        min      query   number  false  "Min amount"
+// @Param        max      query   number  false  "Max amount"
+// @Success      200  {object}  map[string]interface{}
+// @Failure      400  {object}  map[string]interface{}
+// @Failure      500  {object}  map[string]interface{}
+// @Router       /api/expenses/categories [get]
 func GetFilteredExpensesHandler(c *gin.Context) {
 	userID := c.GetInt("user_id")
 
@@ -119,6 +174,20 @@ func GetFilteredExpensesHandler(c *gin.Context) {
 
 }
 
+// GetTotalFilteredExpensesHandler godoc
+// @Summary      Get total filtered expenses
+// @Description  Get total amount of filtered expenses
+// @Tags         expenses
+// @Produce      json
+// @Param        from     query   string  false  "From date"
+// @Param        to       query   string  false  "To date"
+// @Param        category query   string  false  "Category"
+// @Param        min      query   number  false  "Min amount"
+// @Param        max      query   number  false  "Max amount"
+// @Success      200  {object}  map[string]interface{}
+// @Failure      400  {object}  map[string]interface{}
+// @Failure      500  {object}  map[string]interface{}
+// @Router       /api/expenses/total [get]
 func GetTotalFilteredExpensesHandler(c *gin.Context) {
 	userID := c.GetInt("user_id")
 

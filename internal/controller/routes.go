@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	//"ExpenceTracker/internal/controller"
+	//"ExpenseTracker/internal/controller"
 )
 
 func RegisterRoutes(r *gin.Engine) {
@@ -13,14 +13,40 @@ func RegisterRoutes(r *gin.Engine) {
 	auth.Use(AuthMiddleware())
 
 	auth.GET("/profile", ProfileHandler)
-	auth.POST("/expenses", CreateExpenseHandler)
-	auth.GET("/expenses", GetExpencesHandler)
-	auth.PUT("/expenses/:id", UpdateExpenseHandler)
-	auth.DELETE("/expenses/:id", DeleteExpenseHandler)
-	auth.GET("/expenses/categories", GetFilteredExpensesHandler)
-	auth.GET("/expenses/total", GetTotalFilteredExpensesHandler)
 
-	auth.POST("/budgets", SetBudgetHandler)
-	auth.GET("/budgets", GetBudgetsHandler)
-	auth.GET("/budgets/status", CheckBudgetHandler)
+	expenseGroup := auth.Group("/expenses")
+	expenseGroup.POST("", CreateExpenseHandler)
+	expenseGroup.GET("", GetExpencesHandler)
+	expenseGroup.PUT("/:id", UpdateExpenseHandler)
+	expenseGroup.DELETE("/:id", DeleteExpenseHandler)
+	expenseGroup.GET("/categories", GetFilteredExpensesHandler)
+	expenseGroup.GET("/total", GetTotalFilteredExpensesHandler)
+
+	budgetGroup := auth.Group("/budgets")
+	budgetGroup.POST("", SetBudgetHandler)
+	budgetGroup.GET("", GetBudgetsHandler)
+	budgetGroup.GET("/status", CheckBudgetHandler)
+
+	incomeGroup := auth.Group("/incomes")
+	incomeGroup.POST("", CreateIncomeHandler)
+	incomeGroup.GET("", GetIncomesHandler)
+	incomeGroup.DELETE("/:id", DeleteIncomeHandler)
+
+	goalsGroup := auth.Group("/goals")
+	goalsGroup.POST("", CreateGoalHandler)
+	goalsGroup.GET("", GetGoalsHandler)
+	goalsGroup.PUT("/:id", UpdateGoalHandler)
+	goalsGroup.DELETE("/:id", DeleteGoalHandler)
+
+	categoryGroup := auth.Group("/categories")
+	categoryGroup.POST("", CreateCategoryHandler)
+	categoryGroup.GET("", GetCategoriesHandler)
+	categoryGroup.DELETE("/:id", DeleteCategoryHandler)
+
+	auth.GET("/summary/balance", GetBalanceSummaryHandler)
+
+	reportGroup := auth.Group("/reports")
+	reportGroup.GET("/daily", GetDailyReportHandler)
+	reportGroup.GET("/weekly", GetWeeklyReportHandler)
+	reportGroup.GET("/monthly", GetMonthlyReportHandler)
 }

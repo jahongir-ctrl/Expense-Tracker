@@ -1,0 +1,485 @@
+info:
+  contact: {}
+paths:
+  /api/budgets:
+    get:
+      description: Get all budgets for the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get budgets
+      tags:
+      - budgets
+    post:
+      consumes:
+      - application/json
+      description: Set a budget limit for a category
+      parameters:
+      - description: Budget info
+        in: body
+        name: budget
+        required: true
+        schema:
+          properties:
+            category:
+              type: string
+            limit:
+              type: number
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Set budget
+      tags:
+      - budgets
+  /api/budgets/status:
+    get:
+      description: Check if budget is exceeded for a category
+      parameters:
+      - description: Category
+        in: path
+        name: category
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Check budget
+      tags:
+      - budgets
+  /api/categories:
+    get:
+      description: Get all categories for the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get categories
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      description: Create a new category for the user
+      parameters:
+      - description: Category info
+        in: body
+        name: category
+        required: true
+        schema:
+          properties:
+            name:
+              type: string
+            type:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create category
+      tags:
+      - categories
+  /api/categories/{id}:
+    delete:
+      description: Delete a category by ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete category
+      tags:
+      - categories
+  /api/expenses:
+    get:
+      description: Get all expenses for the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get all expenses
+      tags:
+      - expenses
+    post:
+      consumes:
+      - application/json
+      description: Create a new expense for the user
+      parameters:
+      - description: Expense info
+        in: body
+        name: expense
+        required: true
+        schema:
+          properties:
+            amount:
+              type: number
+            category:
+              type: string
+            description:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create expense
+      tags:
+      - expenses
+  /api/expenses/{id}:
+    delete:
+      description: Delete an expense by ID
+      parameters:
+      - description: Expense ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Delete expense
+      tags:
+      - expenses
+    put:
+      consumes:
+      - application/json
+      description: Update an existing expense
+      parameters:
+      - description: Expense ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Expense info
+        in: body
+        name: expense
+        required: true
+        schema:
+          properties:
+            amount:
+              type: number
+            category:
+              type: string
+            description:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Update expense
+      tags:
+      - expenses
+  /api/expenses/categories:
+    get:
+      description: Get expenses by filter
+      parameters:
+      - description: From date
+        in: query
+        name: from
+        type: string
+      - description: To date
+        in: query
+        name: to
+        type: string
+      - description: Category
+        in: query
+        name: category
+        type: string
+      - description: Min amount
+        in: query
+        name: min
+        type: number
+      - description: Max amount
+        in: query
+        name: max
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get filtered expenses
+      tags:
+      - expenses
+  /api/expenses/total:
+    get:
+      description: Get total amount of filtered expenses
+      parameters:
+      - description: From date
+        in: query
+        name: from
+        type: string
+      - description: To date
+        in: query
+        name: to
+        type: string
+      - description: Category
+        in: query
+        name: category
+        type: string
+      - description: Min amount
+        in: query
+        name: min
+        type: number
+      - description: Max amount
+        in: query
+        name: max
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get total filtered expenses
+      tags:
+      - expenses
+  /api/profile:
+    get:
+      description: Get current user profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get profile
+      tags:
+      - auth
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login and get JWT token
+      parameters:
+      - description: User credentials
+        in: body
+        name: user
+        required: true
+        schema:
+          properties:
+            password:
+              type: string
+            username:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login user
+      tags:
+      - auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: User info
+        in: body
+        name: user
+        required: true
+        schema:
+          properties:
+            fullname:
+              type: string
+            password:
+              type: string
+            username:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register user
+      tags:
+      - auth
+swagger: "2.0"

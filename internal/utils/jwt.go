@@ -11,7 +11,7 @@ import (
 //}
 
 const (
-	JWTtlMinutes = 30
+	JWTtlMinutes = 60
 	JWTSecretkey = "1234567890"
 )
 

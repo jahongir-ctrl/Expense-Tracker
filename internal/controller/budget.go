@@ -6,6 +6,17 @@ import (
 	"net/http"
 )
 
+// SetBudgetHandler godoc
+// @Summary      Set budget
+// @Description  Set a budget limit for a category
+// @Tags         budgets
+// @Accept       json
+// @Produce      json
+// @Param        budget  body  object{category=string,limit=number}  true  "Budget info"
+// @Success      201  {object}  map[string]interface{}
+// @Failure      400  {object}  map[string]interface{}
+// @Failure      500  {object}  map[string]interface{}
+// @Router       /api/budgets [post]
 func SetBudgetHandler(c *gin.Context) {
 	userID := c.GetInt("user_id")
 
@@ -26,6 +37,14 @@ func SetBudgetHandler(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"message": "Budget set successfully"})
 }
 
+// GetBudgetsHandler godoc
+// @Summary      Get budgets
+// @Description  Get all budgets for the user
+// @Tags         budgets
+// @Produce      json
+// @Success      200  {object}  map[string]interface{}
+// @Failure      500  {object}  map[string]interface{}
+// @Router       /api/budgets [get]
 func GetBudgetsHandler(c *gin.Context) {
 	userID := c.GetInt("user_id")
 
@@ -38,6 +57,15 @@ func GetBudgetsHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"budgets": budgets})
 }
 
+// CheckBudgetHandler godoc
+// @Summary      Check budget
+// @Description  Check if budget is exceeded for a category
+// @Tags         budgets
+// @Produce      json
+// @Param        category   path      string  true  "Category"
+// @Success      200  {object}  map[string]interface{}
+// @Failure      500  {object}  map[string]interface{}
+// @Router       /api/budgets/status [get]
 func CheckBudgetHandler(c *gin.Context) {
 	userID := c.GetInt("user_id")
 	category := c.Param("category")
