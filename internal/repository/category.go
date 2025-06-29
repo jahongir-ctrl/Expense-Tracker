@@ -18,7 +18,7 @@ func GetCategoriesByUser(userID int) ([]models.Category, error) {
 	return categories, err
 }
 
-func DeleteCategory(userID, categoryID int) error {
+func DeleteCategory(categoryID, userID int) error {
 	query := `DELETE FROM categories WHERE id = $1 AND user_id = $2`
 	_, err := db.GetDBConn().Exec(query, categoryID, userID)
 	return err

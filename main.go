@@ -44,7 +44,6 @@ func main() {
 	//	c.JSON(200, gin.H{
 	//		"message": "Expense Tracker API is running"})
 	//})
-
 	r.Run(":8181") // Run on port 8181
 	fmt.Println("Expense Tracker API is running on http://localhost:8181")
 }

@@ -59,7 +59,7 @@ func DeleteGoalHandler(c *gin.Context) {
 	userID := c.GetInt("user_id")
 	goalID, _ := strconv.Atoi(c.Param("id"))
 
-	if err := service.DeleteGoal(userID, goalID); err != nil {
+	if err := service.DeleteGoal(goalID, userID); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete goal", "details": err.Error()})
 		return
 	}
