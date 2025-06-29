@@ -6,6 +6,7 @@ import (
 	"ExpenceTracker/internal/db"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -20,6 +21,7 @@ import (
 // @name Authorization
 
 func main() {
+	godotenv.Load()
 
 	err := db.ConnectDB()
 	if err != nil {
@@ -45,4 +47,10 @@ func main() {
 
 	r.Run(":8181") // Run on port 8181
 	fmt.Println("Expense Tracker API is running on http://localhost:8181")
+}
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Println("Error loading .env file")
+	}
 }

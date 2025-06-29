@@ -2,6 +2,8 @@ package utils
 
 import (
 	"github.com/dgrijalva/jwt-go"
+	"log"
+	"os"
 	"time"
 )
 
@@ -12,7 +14,6 @@ import (
 
 const (
 	JWTtlMinutes = 60
-	JWTSecretkey = "1234567890"
 )
 
 type CustomClaims struct {
@@ -22,6 +23,11 @@ type CustomClaims struct {
 }
 
 func GenerateToken(userID int, username string) (string, error) {
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		log.Fatal("JWT_SECRET environment variable not set")
+	}
+
 	claims := CustomClaims{
 		UserID:   userID,
 		Username: username,
@@ -32,12 +38,17 @@ func GenerateToken(userID int, username string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(JWTSecretkey))
+	return token.SignedString([]byte(secret))
 }
 
 func ParseToken(tokenStr string) (*CustomClaims, error) {
+	secret := os.Getenv("JWT_SECRET")
+	if secret == "" {
+		log.Fatal("JWT_SECRET environment variable not set")
+	}
+
 	token, err := jwt.ParseWithClaims(tokenStr, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return []byte(JWTSecretkey), nil
+		return []byte(secret), nil
 	})
 
 	if err != nil {
