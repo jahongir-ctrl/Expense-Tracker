@@ -39,3 +39,5 @@
    ```bash
    git clone https://github.com/your-username/expense-tracker.git
    cd expense-tracker
+   go run main.go
+   ```
