@@ -90,5 +90,24 @@ CREATE TABLE IF NOT EXISTS categories (
 	if err != nil {
 		return err
 	}
+	//return nil
+
+	recurringTable := `
+CREATE TABLE IF NOT EXISTS recurring_expenses (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    amount FLOAT NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    description TEXT,
+    frequency VARCHAR(50) NOT NULL,
+    next_date DATE NOT NULL,
+    active BOOLEAN NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);`
+
+	_, err = db.Exec(recurringTable)
+	if err != nil {
+		return err
+	}
 	return nil
 }

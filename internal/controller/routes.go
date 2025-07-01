@@ -49,4 +49,10 @@ func RegisterRoutes(r *gin.Engine) {
 	reportGroup.GET("/daily", GetDailyReportHandler)
 	reportGroup.GET("/weekly", GetWeeklyReportHandler)
 	reportGroup.GET("/monthly", GetMonthlyReportHandler)
+
+	recurringGroup := auth.Group("/recurring")
+	recurringGroup.POST("", CreateRecurringExpenseHandler)
+	recurringGroup.GET("", GetRecurringExpensesHandler)
+	recurringGroup.DELETE("/:id", DeleteRecurringExpenseHandler)
+	recurringGroup.PUT("/:id/stop", StopRecurringExpenseHandler)
 }

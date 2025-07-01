@@ -1,5 +1,8 @@
 info:
   contact: {}
+  description: API Server for Expense Tracker Application
+  title: Expense Tracker API
+  version: "1.0"
 paths:
   /api/budgets:
     get:
@@ -482,4 +485,9 @@ paths:
       summary: Register user
       tags:
       - auth
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

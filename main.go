@@ -4,52 +4,72 @@ import (
 	_ "ExpenceTracker/docs"
 	"ExpenceTracker/internal/controller"
 	"ExpenceTracker/internal/db"
+	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 )
 
-// @title MindsWallet API
+// @title Expense Tracker API
 // @version 1.0
-// @description API Server for MindsWallet Application
+// @description API Server for Expense Tracker Application
 // @securityDefinitions.apikey ApiKeyAuth
-// @host localhost:8181
-// @BasePath /
 // @in header
 // @name Authorization
+// @host localhost:8181
+// @BasePath /
 
 func main() {
-	godotenv.Load()
+	if err := godotenv.Load(); err != nil {
+		fmt.Println("Error loading .env file")
+	}
 
-	err := db.ConnectDB()
-	if err != nil {
-		fmt.Println("Error to connect with DB :", err)
+	if err := db.ConnectDB(); err != nil {
+		log.Fatalf("DB Connection error: %v", err)
 	}
 	defer db.CloseDB()
 
-	err = db.InitMigrations()
-	if err != nil {
-		fmt.Println("Error to init migration :", err)
+	if err := db.InitMigrations(); err != nil {
+		log.Fatalf("Migration error: %v", err)
 	}
 
-	r := gin.Default()
-	controller.RegisterRoutes(r)
+	router := gin.Default()
 
-	// Swagger route
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	controller.RegisterRoutes(router)
 
-	//r.GET("/", func(c *gin.Context) {
-	//	c.JSON(200, gin.H{
-	//		"message": "Expense Tracker API is running"})
-	//})
-	r.Run(":8181") // Run on port 8181
-	fmt.Println("Expense Tracker API is running on http://localhost:8181")
-}
-func init() {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Error loading .env file")
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	srv := &http.Server{
+		Addr:    ":8181",
+		Handler: router,
 	}
+
+	go func() {
+		fmt.Println(" Server running at http://localhost:8181")
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Server error: %v", err)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	fmt.Println("Gracefully shutting down...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatalf("Shutdown failed: %v", err)
+	}
+
+	fmt.Println("✅ Server stopped properly")
 }
