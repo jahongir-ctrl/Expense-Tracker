@@ -57,28 +57,28 @@ func GetBudgetsHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"budgets": budgets})
 }
 
-// CheckBudgetHandler godoc
-// @Summary      Check budget
-// @Description  Check if budget is exceeded for a category
-// @Tags         budgets
-// @Produce      json
-// @Param        category   path      string  true  "Category"
-// @Success      200  {object}  map[string]interface{}
-// @Failure      500  {object}  map[string]interface{}
-// @Router       /api/budgets/status [get]
-func CheckBudgetHandler(c *gin.Context) {
-	userID := c.GetInt("user_id")
-	category := c.Param("category")
-
-	isExceeded, total, limit, err := service.IsBudgetExceeded(userID, category)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check budget", "details": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"category": category,
-		"total":    total,
-		"limit":    limit,
-		"exceeded": isExceeded,
-	})
-}
+//CheckBudgetHandler godoc
+//@Summary      Check budget
+//@Description  Check if budget is exceeded for a category
+//@Tags         budgets
+//@Produce      json
+//@Param        category   path      string  true  "Category"
+//@Success      200  {object}  map[string]interface{}
+//@Failure      500  {object}  map[string]interface{}
+//@Router       /api/budgets/status [get]
+//func CheckBudgetHandler(c *gin.Context) {
+//	userID := c.GetInt("user_id")
+//	category := c.Param("category")
+//
+//	isExceeded, total, limit, err := service.IsBudgetExceeded(userID, category)
+//	if err != nil {
+//		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to check budget", "details": err.Error()})
+//		return
+//	}
+//	c.JSON(http.StatusOK, gin.H{
+//		"category": category,
+//		"total":    total,
+//		"limit":    limit,
+//		"exceeded": isExceeded,
+//	})
+//}

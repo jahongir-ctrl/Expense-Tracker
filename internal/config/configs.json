@@ -1,0 +1,21 @@
+{
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "user": "admin",
+    "password": "jhg_3399",
+    "name": "ExpenceTrackerDB"
+  },
+  "logParams": {
+    "logDirectory": "./logs",
+    "logInfo": "info.log",
+    "logError": "error.log",
+    "logWarn": "warn.log",
+    "logDebug": "debug.log",
+    "maxSizeMegabytes": 10,
+    "maxBackups": 5,
+    "maxAge": 30,
+    "compress": true,
+    "localTime": true
+  }
+}

@@ -25,7 +25,7 @@ func RegisterRoutes(r *gin.Engine) {
 	budgetGroup := auth.Group("/budgets")
 	budgetGroup.POST("", SetBudgetHandler)
 	budgetGroup.GET("", GetBudgetsHandler)
-	budgetGroup.GET("/status", CheckBudgetHandler)
+	//budgetGroup.GET("/status", CheckBudgetHandler)
 
 	incomeGroup := auth.Group("/incomes")
 	incomeGroup.POST("", CreateIncomeHandler)
